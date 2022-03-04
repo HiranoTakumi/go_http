@@ -1,0 +1,8 @@
+version: "3.5"
+
+services:
+  server:
+    build: .
+    command: ./main
+    ports:
+      - 3000:8080
