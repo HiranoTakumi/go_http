@@ -23,6 +23,7 @@ func LateResponse(c echo.Context) error {
 	log.Println(c.Request().Header.Get(echo.HeaderXRealIP))
 	log.Println(c.Request().Header.Get(echo.HeaderXForwardedFor))
 	log.Println(echo.ExtractIPDirect()(c.Request()))
+	log.Println(c.Request().Header.Get(echo.HeaderAuthorization))
 	resp := map[string]int{"sleepTime": sleepTime}
 	return c.JSON(http.StatusOK, resp)
 }

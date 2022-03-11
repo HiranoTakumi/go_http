@@ -50,22 +50,31 @@ func main() {
 	second := os.Args[1]
 	url = url + "?second=" + second
 
-	// client := &http.Client{}
+	client := &http.Client{}
 	// client := newClient(Timeout(timeout_second))
-	// client.Timeout = 5 * time.Second
 
-	resp, err := client.Get(url)
-	defer resp.Body.Close()
+	req, e := http.NewRequest(
+		"GET",
+		url,
+		nil,
+	)
+	if e != nil {
+		log.Println(e)
+		return
+	}
+	req.SetBasicAuth("id", "password")
 
-	if err != nil {
-		log.Println(err.Error())
+	resp, e := client.Do(req)
+	if e != nil {
+		log.Println(e)
 		log.Println(resp)
 		return
 	}
+	defer resp.Body.Close()
 
 	var output Response
 	// e := json.Unmarshal(resp.Body, &output)
-  e := json.NewDecoder(resp.Body).Decode(&output)
+  e = json.NewDecoder(resp.Body).Decode(&output)
 	if e != nil {
 		log.Println(e.Error())
 	} else {
