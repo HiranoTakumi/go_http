@@ -1,11 +1,9 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
-	// jwt "github.com/dgrijalva/jwt-go"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -38,7 +36,6 @@ func Login(c echo.Context) error {
 
 func Refresh(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
-	fmt.Println(user)
 	claims := user.Claims.(jwt.MapClaims)
 	tokenType := claims["tokenType"].(string)
 	name := claims["userName"].(string)
