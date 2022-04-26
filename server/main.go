@@ -2,11 +2,13 @@ package main
 
 import (
 	"flag"
-	"github.com/HiranoTakumi/server/handlers"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"log"
 	"net/http"
+
+	"github.com/HiranoTakumi/go_http/server/handlers"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 var (
