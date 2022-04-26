@@ -5,10 +5,10 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	// "github.com/labstack/echo/v4/middleware"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
-	"log"
 	// "strings"
 )
 
@@ -26,6 +26,20 @@ func LateResponse(c echo.Context) error {
 	log.Println(c.Request().Header.Get(echo.HeaderAuthorization))
 	resp := map[string]int{"sleepTime": sleepTime}
 	return c.JSON(http.StatusOK, resp)
+}
+
+type Person struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+}
+type Persons struct {
+	Persons []Person `json:"persons"`
+}
+
+func ListApi(c echo.Context) error {
+	res := Persons{}
+	res.Persons = []Person{}
+	return c.JSON(http.StatusOK, res)
 }
 
 func CookieApi(c echo.Context) error {

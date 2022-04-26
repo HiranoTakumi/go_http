@@ -39,14 +39,15 @@ func main() {
 	}))
 	// e.IPExtractor = echo.ExtractIPDirect()
 	e.IPExtractor = echo.ExtractIPFromXFFHeader(
-		// echo.TrustLinkLocal(false),
-		// echo.TrustPrivateNet(false),
-		// echo.TrustLoopback(false),
+	// echo.TrustLinkLocal(false),
+	// echo.TrustPrivateNet(false),
+	// echo.TrustLoopback(false),
 	)
 	//// Routes
 	e.GET("/healthcheck", handlers.Healthcheck)
 	e.GET("/", handlers.LateResponse)
 
+	e.GET("/list", handlers.ListApi)
 	e.GET("/api", handlers.GroupApi)
 	e.GET("/cors", handlers.CorsWithRpID)
 	e.POST("/login", handlers.Login)
