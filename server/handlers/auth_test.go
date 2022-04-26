@@ -11,13 +11,14 @@ import (
 )
 
 func TestRefresh(t *testing.T) {
+	h := NewHandler()
 	t.Run("auth_test", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/restricted/refresh", nil)
 		req.Header.Set(echo.HeaderAuthorization, "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjMxMjgxNzcsImlhdCI6MTY0NzU3NjE3NywidG9rZW5UeXBlIjoicmVmcmVzaCIsInVzZXJOYW1lIjoidGVzdCJ9.gGaXmyNFMW-rB_5L7huNodlslc7uOsX8ylOLUwrgqbA")
 
 		res := httptest.NewRecorder()
 		e := echo.New()
-		e.GET("/restricted/refresh", Refresh)
+		e.GET("/restricted/refresh", h.Refresh)
 		e.Use(middleware.JWT([]byte("secret")))
 		e.ServeHTTP(res, req)
 

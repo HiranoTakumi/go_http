@@ -1,18 +1,19 @@
 package handlers
 
 import (
-	// jwt "github.com/dgrijalva/jwt-go"
-	"github.com/golang-jwt/jwt"
-	"github.com/labstack/echo/v4"
-	// "github.com/labstack/echo/v4/middleware"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
 	// "strings"
+
+	// jwt "github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
+	"github.com/labstack/echo/v4"
+	// "github.com/labstack/echo/v4/middleware"
 )
 
-func LateResponse(c echo.Context) error {
+func (h *Handler) LateResponse(c echo.Context) error {
 	second := c.QueryParam("second")
 	sleepTime, err := strconv.Atoi(second)
 	if err != nil {
@@ -28,21 +29,13 @@ func LateResponse(c echo.Context) error {
 	return c.JSON(http.StatusOK, resp)
 }
 
-type Person struct {
-	Name string `json:"name"`
-	Age  int    `json:"age"`
-}
-type Persons struct {
-	Persons []Person `json:"persons"`
-}
-
-func ListApi(c echo.Context) error {
+func (h *Handler) ListApi(c echo.Context) error {
 	res := Persons{}
 	res.Persons = []Person{}
 	return c.JSON(http.StatusOK, res)
 }
 
-func CookieApi(c echo.Context) error {
+func (h *Handler) CookieApi(c echo.Context) error {
 	secure := true
 	httpOnly := false
 	accToken := &http.Cookie{
@@ -59,7 +52,7 @@ func CookieApi(c echo.Context) error {
 	return c.JSON(http.StatusOK, nil)
 }
 
-func ValidCookie(c echo.Context) error {
+func (h *Handler) ValidCookie(c echo.Context) error {
 	// cookie := c.Request().Cookies()
 	// // if err != nil {
 	// // 	return c.JSON(http.StatusBadRequest, map[string]string{"message": err.Error()})
@@ -75,17 +68,17 @@ func ValidCookie(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{"message": "OK"})
 }
 
-func CorsWithRpID(c echo.Context) error {
+func (h *Handler) CorsWithRpID(c echo.Context) error {
 	resp := map[string]string{"message": "OK"}
 	return c.JSON(http.StatusOK, resp)
 }
 
-func GroupApi(c echo.Context) error {
+func (h *Handler) GroupApi(c echo.Context) error {
 	resp := map[string]string{"text": "api"}
 	return c.JSON(http.StatusOK, resp)
 }
 
-func Restricted(c echo.Context) error {
+func (h *Handler) Restricted(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	name := claims["userName"].(string)

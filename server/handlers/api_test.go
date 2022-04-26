@@ -11,13 +11,14 @@ import (
 )
 
 func Test_ListApi(t *testing.T) {
+	h := NewHandler()
 	t.Run("sample_test", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/list", nil)
 		rec := httptest.NewRecorder()
 		e := echo.New()
 		c := e.NewContext(req, rec)
 
-		assert.NoError(t, ListApi(c))
+		assert.NoError(t, h.ListApi(c))
 		assert.Equal(t, http.StatusOK, rec.Code)
 
 		var res Persons

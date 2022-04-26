@@ -6,6 +6,6 @@ import (
 )
 
 // Healthcheck handles GET /helthcheck
-func Healthcheck(c echo.Context) error {
+func (h *Handler) Healthcheck(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }

@@ -13,7 +13,7 @@ const (
 	userIDKey = "USER_ID_KEY"
 )
 
-func Login(c echo.Context) error {
+func (h *Handler) Login(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
 
@@ -34,7 +34,7 @@ func Login(c echo.Context) error {
 	return c.JSON(http.StatusUnauthorized, map[string]string{"message": "authentication failed."})
 }
 
-func Refresh(c echo.Context) error {
+func (h *Handler) Refresh(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	tokenType := claims["tokenType"].(string)

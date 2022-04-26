@@ -37,32 +37,36 @@ func main() {
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: allowedOrigins,
 	}))
+
 	// e.IPExtractor = echo.ExtractIPDirect()
 	e.IPExtractor = echo.ExtractIPFromXFFHeader(
 	// echo.TrustLinkLocal(false),
 	// echo.TrustPrivateNet(false),
 	// echo.TrustLoopback(false),
 	)
-	//// Routes
-	e.GET("/healthcheck", handlers.Healthcheck)
-	e.GET("/", handlers.LateResponse)
 
-	e.GET("/list", handlers.ListApi)
-	e.GET("/api", handlers.GroupApi)
-	e.GET("/cors", handlers.CorsWithRpID)
-	e.POST("/login", handlers.Login)
-	e.GET("getCookie", handlers.CookieApi)
-	e.GET("validCookie", handlers.ValidCookie)
+	h := handlers.NewHandler()
+
+	//// Routes
+	e.GET("/healthcheck", h.Healthcheck)
+	e.GET("/", h.LateResponse)
+
+	e.GET("/list", h.ListApi)
+	e.GET("/api", h.GroupApi)
+	e.GET("/cors", h.CorsWithRpID)
+	e.POST("/login", h.Login)
+	e.GET("getCookie", h.CookieApi)
+	e.GET("validCookie", h.ValidCookie)
 
 	r := e.Group("/restricted")
 	r.Use(middleware.JWT([]byte("secret")))
-	r.GET("/welcome", handlers.Restricted)
-	r.GET("/refresh", handlers.Refresh)
-	r.GET("Api", handlers.Restricted)
+	r.GET("/welcome", h.Restricted)
+	r.GET("/refresh", h.Refresh)
+	r.GET("Api", h.Restricted)
 
 	a := e.Group("/cors")
 	a.Use(corsConfig)
-	a.GET("/check", handlers.CorsWithRpID)
+	a.GET("/check", h.CorsWithRpID)
 
 	//// Start server
 	log.Println("port: " + *port)

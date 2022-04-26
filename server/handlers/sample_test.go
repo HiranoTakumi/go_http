@@ -12,6 +12,7 @@ import (
 )
 
 func TestJWT(t *testing.T) {
+	h := NewHandler()
 	t.Run("sample_test", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		req.Header.Set(echo.HeaderAuthorization, "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjMxMjgxNzcsImlhdCI6MTY0NzU3NjE3NywidG9rZW5UeXBlIjoicmVmcmVzaCIsInVzZXJOYW1lIjoidGVzdCJ9.gGaXmyNFMW-rB_5L7huNodlslc7uOsX8ylOLUwrgqbA")
@@ -22,7 +23,7 @@ func TestJWT(t *testing.T) {
 			token := c.Get("user").(*jwt.Token)
 			return c.JSON(http.StatusOK, token.Claims)
 		})
-		e.GET("/", Sample)
+		e.GET("/", h.Sample)
 		e.Use(middleware.JWT([]byte("secret")))
 		e.ServeHTTP(res, req)
 
